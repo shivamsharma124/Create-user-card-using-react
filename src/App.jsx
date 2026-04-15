@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Card from "./assets/components/Card";
 
 const App = () => {
@@ -7,11 +7,19 @@ const App = () => {
     const [userRole, setuserRole] = useState("")
     const [userDesc, setuserDesc] = useState("")
     const [allUsers, setallUsers] = useState([])
+    useEffect(() => {
+  let local = JSON.parse(localStorage.getItem("all-user")) || []
+  setallUsers(local)
+}, [])
+    // let local=JSON.parse(localStorage.getItem("all-users"))||[]
+
+    // setallUsers(local)
     function removeHandler(id)
     {
       let oldUser=[...allUsers]
       oldUser.splice(id,1)
       setallUsers(oldUser)
+      localStorage.setItem("all-user",JSON.stringify(oldUser))
     }
 
   function formsubmitted(e)
@@ -21,6 +29,7 @@ const App = () => {
     oldUsers.push({username,userImage,userRole,userDesc})
     setallUsers(oldUsers)
     console.log(oldUsers)
+    localStorage.setItem("all-user",JSON.stringify(oldUsers))
     console.log("form submitted")
     setusername("")
     setuserImage("")
